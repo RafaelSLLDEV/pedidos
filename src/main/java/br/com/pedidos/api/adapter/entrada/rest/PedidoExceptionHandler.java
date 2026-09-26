@@ -1,6 +1,7 @@
 package br.com.pedidos.api.adapter.entrada.rest;
 
 import br.com.pedidos.api.application.PedidoSemItensException;
+import br.com.pedidos.api.application.PedidoNaoEncontradoException;
 import br.com.pedidos.api.domain.ItemInvalidoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,16 @@ public class PedidoExceptionHandler {
     public ResponseEntity<ErroResponse> handleDomainError(RuntimeException exception) {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
                 .body(new ErroResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(PedidoNaoEncontradoException.class)
+    public ResponseEntity<ErroResponse> handleNotFound(PedidoNaoEncontradoException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErroResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ErroResponse> handleClosedOrder(IllegalStateException exception) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErroResponse(exception.getMessage()));
     }
 
     @ExceptionHandler({HttpMessageNotReadableException.class, MethodArgumentNotValidException.class})

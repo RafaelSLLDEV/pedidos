@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 class CriarPedidoServiceTest {
 
@@ -44,6 +46,11 @@ class CriarPedidoServiceTest {
 
         private final List<Pedido> salvos = new ArrayList<>();
         private Pedido resultado;
+
+        @Override
+        public Optional<Pedido> buscarPorId(UUID id) {
+            return Optional.empty();
+        }
 
         @Override
         public Pedido salvar(Pedido pedido) {
